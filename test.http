@@ -1,0 +1,67 @@
+### Create a new User
+POST http://127.0.0.1:3000/register
+Content-Type: application/json
+
+{
+    "name": "Emmanuel",
+    "email": "hello3gmail.com",
+    "password": "12345678",
+    "age": 18,
+    "field": "anything"
+}
+
+
+### Login
+POST http://127.0.0.1:3000/login
+Content-Type: application/json
+
+{
+    "email": "hello3gmail.com",
+    "password": "12345678"
+}
+
+### Get User Profile
+GET http://127.0.0.1:3000/profile
+Authorization: Bearer <your_jwt_token_here>
+
+
+### Update User Profile (Email cannot be changed)
+PUT http://127.0.0.1:3000/edit-profile
+Content-Type: application/json
+Authorization: Bearer <your_jwt_token_here>
+
+{
+    "name": "Emmanuel David",
+    "age": 28,
+    "field": "Software Engineering"
+}
+
+
+### Change Password (Authenticated User)
+PUT http://127.0.0.1:3000/change-password
+Content-Type: application/json
+Authorization: Bearer <your_jwt_token_here>
+
+{
+    "oldPassword": "12345678",
+    "newPassword": "newpassword123"
+}
+
+
+### Forgot Password (Request Reset Token)
+POST http://127.0.0.1:3000/forgot-password
+Content-Type: application/json
+
+{
+    "email": "hello@gmail.com"
+}
+
+
+### Reset Password (Using Token)
+POST http://127.0.0.1:3000/reset-password
+Content-Type: application/json
+
+{
+    "token": "<reset_token_from_forgot_password>",
+    "newPassword": "newpassword123"
+}
