@@ -1,1 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Authentication System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+    
+    <!-- Alert Container -->
+    <div id="alertContainer" class="fixed top-4 right-4 z-50 space-y-2"></div>
 
+    <!-- Navigation Bar -->
+    <nav id="navbar" class="bg-white shadow-md hidden">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-indigo-600">UserAuth</h1>
+            <div class="space-x-4">
+                <button onclick="showPage('profilePage')" class="text-gray-700 hover:text-indigo-600">Profile</button>
+                <button onclick="logout()" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container mx-auto px-4 py-8">
+        
+        <!-- Login Page -->
+        <div id="loginPage" class="page active">
+            <div class="max-w-md mx-auto bg-white rounded-xl shadow-lg p-8 mt-20">
+                <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">Welcome Back</h2>
+                <form onsubmit="handleLogin(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">Email</label>
+                        <input type="email" id="loginEmail" required 
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">Password</label>
+                        <input type="password" id="loginPassword" required 
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    <button type="submit" 
+                            class="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 font-medium transition">
+                        Login
+                    </button>
+                </form>
+                <div class="mt-6 text-center space-y-2">
+                    <button onclick="showPage('forgotPasswordPage')" class="text-indigo-600 hover:underline text-sm">Forgot Password?</button>
+                    <p class="text-gray-600">Don't have an account? 
+                        <button onclick="showPage('registerPage')" class="text-indigo-600 hover:underline font-medium">Register</button>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Register Page -->
+        <div id="registerPage" class="page">
+            <div class="max-w-md mx-auto bg-white rounded-xl shadow-lg p-8 mt-20">
+                <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">Create Account</h2>
+                <form onsubmit="handleRegister(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">Name</label>
+                        <input type="text" id="regName" required 
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">Email</label>
+                        <input type="email" id="regEmail" required 
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">Password (min 8 characters)</label>
+                        <input type="password" id="regPassword" required minlength="8"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    <div class="flex gap-4">
+                        <div class="flex-1">
+                            <label class="block text-gray-700 font-medium mb-2">Age</label>
+                            <input type="number" id="regAge" min="0" 
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                        <div class="flex-1">
+                            <label class="block text-gray-700 font-medium mb-2">Field</label>
+                            <select id="regField" 
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <option value="Backend">Backend</option>
+                                <option value="Frontend">Frontend</option>
+                                <option value="Fullstack">Fullstack</option>
+                                <option value="DevOps">DevOps</option>
+                                <option value="Data Science">Data Science</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" 
+                            class="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 font-medium transition">
+                        Register
+                    </button>
+                </form>
+                <p class="mt-6 text-center text-gray-600">Already have an account? 
+                    <button onclick="showPage('loginPage')" class="text-indigo-600 hover:underline font-medium">Login</button>
+                </p>
+            </div>
+        </div>
+
+        <!-- Profile Page -->
+        <div id="profilePage" class="page">
+            <div class="max-w-4xl mx-auto">
+                <div class="bg-white rounded-xl shadow-lg p-8 mb-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-3xl font-bold text-gray-800">My Profile</h2>
+                        <button onclick="toggleEditMode()" id="editBtn" 
+                                class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition">
+                            Edit Profile
+                        </button>
+                    </div>
+                    
+                    <!-- View Mode -->
+                    <div id="viewMode" class="space-y-4">
+                        <div class="grid grid-cols-2 gap-6">
+                            <div>
+                                <p class="text-gray-600 text-sm">Name</p>
+                                <p id="displayName" class="text-xl font-semibold text-gray-800"></p>
+                            </div>
+                            <div>
+                                <p class="text-gray-600 text-sm">Email</p>
+                                <p id="displayEmail" class="text-xl font-semibold text-gray-800"></p>
+                            </div>
+                            <div>
+                                <p class="text-gray-600 text-sm">Age</p>
+                                <p id="displayAge" class="text-xl font-semibold text-gray-800"></p>
+                            </div>
+                            <div>
+                                <p class="text-gray-600 text-sm">Field</p>
+                                <p id="displayField" class="text-xl font-semibold text-gray-800"></p>
+                            </div>
+                            <div>
+                                <p class="text-gray-600 text-sm">Member Since</p>
+                                <p id="displayCreatedAt" class="text-xl font-semibold text-gray-800"></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Edit Mode -->
+                    <form id="editMode" style="display: none;" onsubmit="handleUpdateProfile(event)" class="space-y-4">
+                        <div class="grid grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-2">Name</label>
+                                <input type="text" id="editName" required 
+                                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-2">Email (Cannot change)</label>
+                                <input type="email" id="editEmail" disabled 
+                                       class="w-full px-4 py-2 border border-gray-300 rounded-lg bg-gray-100">
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-2">Age</label>
+                                <input type="number" id="editAge" min="0" required 
+                                       class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                            </div>
+                            <div>
+                                <label class="block text-gray-700 font-medium mb-2">Field</label>
+                                <select id="editField" 
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                    <option value="Backend">Backend</option>
+                                    <option value="Frontend">Frontend</option>
+                                    <option value="Fullstack">Fullstack</option>
+                                    <option value="DevOps">DevOps</option>
+                                    <option value="Data Science">Data Science</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="flex gap-4">
+                            <button type="submit" 
+                                    class="flex-1 bg-green-600 text-white py-2 rounded-lg hover:bg-green-700 transition">
+                                Save Changes
+                            </button>
+                            <button type="button" onclick="toggleEditMode()" 
+                                    class="flex-1 bg-gray-500 text-white py-2 rounded-lg hover:bg-gray-600 transition">
+                                Cancel
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Change Password Section -->
+                <div class="bg-white rounded-xl shadow-lg p-8">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-4">Change Password</h3>
+                    <form onsubmit="handleChangePassword(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">Old Password</label>
+                            <input type="password" id="oldPassword" required 
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">New Password</label>
+                            <input type="password" id="newPassword" required minlength="8"
+                                   class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                        </div>
+                        <button type="submit" 
+                                class="bg-indigo-600 text-white px-6 py-2 rounded-lg hover:bg-indigo-700 transition">
+                            Change Password
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Forgot Password Page -->
+        <div id="forgotPasswordPage" class="page">
+            <div class="max-w-md mx-auto bg-white rounded-xl shadow-lg p-8 mt-20">
+                <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">Forgot Password</h2>
+                <form onsubmit="handleForgotPassword(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">Email</label>
+                        <input type="email" id="forgotEmail" required 
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    <button type="submit" 
+                            class="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 font-medium transition">
+                        Send Reset Link
+                    </button>
+                </form>
+                <p class="mt-6 text-center text-gray-600">Remember your password? 
+                    <button onclick="showPage('loginPage')" class="text-indigo-600 hover:underline font-medium">Login</button>
+                </p>
+            </div>
+        </div>
+
+        <!-- Reset Password Page -->
+        <div id="resetPasswordPage" class="page">
+            <div class="max-w-md mx-auto bg-white rounded-xl shadow-lg p-8 mt-20">
+                <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">Reset Password</h2>
+                <form onsubmit="handleResetPassword(event)" class="space-y-4">
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">Reset Token</label>
+                        <input type="text" id="resetToken" required 
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 font-medium mb-2">New Password</label>
+                        <input type="password" id="resetNewPassword" required minlength="8"
+                               class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    <button type="submit" 
+                            class="w-full bg-indigo-600 text-white py-2 rounded-lg hover:bg-indigo-700 font-medium transition">
+                        Reset Password
+                    </button>
+                </form>
+                <p class="mt-6 text-center text-gray-600">
+                    <button onclick="showPage('loginPage')" class="text-indigo-600 hover:underline font-medium">Back to Login</button>
+                </p>
+            </div>
+        </div>
+
+        <script src="./index.js"></script>
+    </div>
+</body>
+</html>
