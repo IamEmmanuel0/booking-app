@@ -2,7 +2,8 @@ const express = require('express');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { Pool } = require('pg');
-const crypto = require('crypto');
+const cors = require('cors');
+const rateLimit = require('express-rate-limit');
 const app = express();
 
 const port = 3000;
@@ -19,6 +20,36 @@ const pool = new Pool({
 
 // Middleware
 app.use(express.json());
+app.use(cors()); // Enable CORS for all routes
+
+// Optional: restrict origins if needed
+// app.use(cors({
+//   origin: ['http://localhost:5500'],
+//   methods: ['GET', 'POST', 'PUT', 'DELETE'],
+//   allowedHeaders: ['Content-Type', 'Authorization']
+// }));
+
+// // Global rate limiter (all requests)
+// const globalLimiter = rateLimit({
+//   windowMs: 15 * 60 * 1000, // 15 minutes
+//   max: 200, // limit each IP to 200 requests per window
+//   message: { status: 'error', message: 'Too many requests, please try again later.' },
+// });
+// app.use(globalLimiter);
+
+// // More strict rate limiters for auth routes
+// const authLimiter = rateLimit({
+//   windowMs: 15 * 60 * 1000, // 15 minutes
+//   max: 3, // allow max 3 tries in 10 mins
+//   message: { status: 'error', message: 'Too many login attempts. Try again later.' },
+// });
+
+
+// pool.connect().then(() => {
+//   console.log("Connected to PostgreSQL database");
+// }).catch(err => {
+//   console.error("PostgreSQL connection error:", err);
+// });
 
 // init db
 const initDB = async () => {
