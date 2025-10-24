@@ -1,0 +1,67 @@
+### Create a new User
+POST http://127.0.0.1:3000/register
+Content-Type: application/json
+
+{
+    "name": "Emmanuel",
+    "email": "dev@gmail.com",
+    "password": "12345678",
+    "age": 18,
+    "field": "anything"
+}
+
+
+### Login
+POST http://127.0.0.1:3000/login
+Content-Type: application/json
+
+{
+    "email": "dev@gmail.com",
+    "password": "12345678"
+}
+
+### Get User Profile
+GET http://127.0.0.1:3000/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJkZXZAZ21haWwuY29tIiwiaWF0IjoxNzYxMzE2Mzk0LCJleHAiOjE3NjM5MDgzOTR9.rsbYEKSyR5eZR_hFFeQMWIXenlAjARsI-Ykt8YKkTYM
+
+
+### Update User Profile (Email cannot be changed)
+PUT http://127.0.0.1:3000/edit-profile
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJkZXZAZ21haWwuY29tIiwiaWF0IjoxNzYxMzE2Mzk0LCJleHAiOjE3NjM5MDgzOTR9.rsbYEKSyR5eZR_hFFeQMWIXenlAjARsI-Ykt8YKkTYM
+
+{
+    "name": "John David",
+    "age": 28,
+    "field": "Software Engineering"
+}
+
+
+### Change Password (Authenticated User)
+PUT http://127.0.0.1:3000/change-password
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJkZXZAZ21haWwuY29tIiwiaWF0IjoxNzYxMzE2Mzk0LCJleHAiOjE3NjM5MDgzOTR9.rsbYEKSyR5eZR_hFFeQMWIXenlAjARsI-Ykt8YKkTYM
+
+{
+    "oldPassword": "12345678",
+    "newPassword": "newpassword123"
+}
+
+
+### Forgot Password (Request Reset Token)
+POST http://127.0.0.1:3000/forgot-password
+Content-Type: application/json
+
+{
+    "email": "dev@gmail.com"
+}
+
+
+### Reset Password (Using Token)
+POST http://127.0.0.1:3000/reset-password
+Content-Type: application/json
+
+{
+    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJkZXZAZ21haWwuY29tIiwiaWF0IjoxNzYxMzE2ODkwLCJleHAiOjE3NjEzMTc3OTB9.goASdJzTsZRYg6qVgMOWlLcWkxkCygVmUe1QCy98oV0",
+    "newPassword": "12345678"
+}
