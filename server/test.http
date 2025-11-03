@@ -1,0 +1,15 @@
+### sign-up
+post http://127.0.0.1:3000/api/auth/signup
+Content-Type: application/json
+
+{
+  "name": "Dr. Emmanuel", 
+  "email": "emmanuel@dr.com", 
+  "password": "12345678", 
+  "role": "doctor", 
+  "phone": "0123456789", 
+  "specialization": "Cardiology", 
+  "bio": "Experienced cardiologist with over 10 years in clinical practice", 
+  "experience": 10, 
+  "consultationFee": 200.00
+}

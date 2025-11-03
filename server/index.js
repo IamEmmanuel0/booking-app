@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
+const authRouter = require('./routes/auth');
 const cors = require('cors');
-const { pool } = require('./config/database');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -10,13 +10,10 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 app.use(cors()); // Enable CORS for all routes
 
-// connect database
-pool.connect()
-  .then(() => console.log('Connected to the database'))
-  .catch(err => console.error('Database connection error', err));
-
 // Routes
 app.get('/', (req, res) => res.send('Hello World!'));
+
+app.use('/api/auth', authRouter)
 
 // Start server
 app.listen(port, () => {
