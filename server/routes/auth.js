@@ -39,7 +39,7 @@ router.post('/signup', async (req, res) => {
 
       const token = jwt.sign(
         { id: user.id, role: user.role },
-        process.env.JWT_SECRET,
+        process.env.process.env.JWT_SECRET,
         { expiresIn: '7d' }
       )
 
@@ -62,7 +62,7 @@ router.post('/signup', async (req, res) => {
 
 
 // Login
-router.post('/api/auth/login', async (req, res) => {
+router.post('/login', async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -83,7 +83,7 @@ router.post('/api/auth/login', async (req, res) => {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-    const token = jwt.sign({ id: user.id, role: user.role }, JWT_SECRET, { expiresIn: '7d' });
+    const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '7d' });
 
     const { password: _, ...userWithoutPassword } = user;
     res.json({ user: userWithoutPassword, token });
