@@ -1,7 +1,11 @@
 require('dotenv').config();
 const express = require('express');
-const authRouter = require('./routes/auth');
 const cors = require('cors');
+const authRouter = require('./routes/auth');
+const doctorRouter = require('./routes/doctors');
+const adminRouter = require('./routes/admin');
+const profileRouter = require('./routes/profile');
+const { authenticateToken, authorizeRole } = require('./middleware');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -14,6 +18,9 @@ app.use(cors()); // Enable CORS for all routes
 app.get('/', (req, res) => res.send('Hello World!'));
 
 app.use('/api/auth', authRouter)
+app.use('/api/doctors', doctorRouter)
+app.use('/api/admin',  authenticateToken, authorizeRole('admin'), adminRouter)
+app.use('/api/profile', authenticateToken, profileRouter)
 
 // Start server
 app.listen(port, () => {
