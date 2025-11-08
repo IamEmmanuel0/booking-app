@@ -29,16 +29,20 @@ router.post('/signup', async (req, res) => {
       const user = userResult.rows[0];
 
       if (role === 'doctor') {
+        if (!bio || !experience) {
+          return res.status(400).json({ error: "Bio, and experience are required" })
+        }
+
         (await client).query(
           'INSERT INTO doctors (user_id, specialization, bio, experience, consultation_fee) VALUES ($1, $2, $3, $4, $5)',
-          [user.id, specialization || 'General', bio || '', experience || 0, consultationFee || 0]
+          [user.id, specialization || 'General', bio, experience, consultationFee || 0]
         )
       }
 
       await client.query('COMMIT')
 
       const token = jwt.sign(
-        { id: user.id, role: user.role },
+        { id: user.id, name: user.name, role: user.role },
         process.env.JWT_SECRET,
         { expiresIn: '7d' }
       )
@@ -82,7 +86,7 @@ router.post('/login', async (req, res) => {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-    const token = jwt.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET, { expiresIn: '7d' });
+    const token = jwt.sign({ id: user.id, name: user.name, role: user.role }, process.env.JWT_SECRET, { expiresIn: '7d' });
 
     const { password: _, ...userWithoutPassword } = user;
     res.json({ user: userWithoutPassword, token });

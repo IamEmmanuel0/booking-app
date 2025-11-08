@@ -43,6 +43,7 @@ const initDB = async () => {
     appointment_time TIME NOT NULL,
     status VARCHAR(20) DEFAULT 'pending',
     notes TEXT,
+    rating INTEGER CHECK (rating >= 1 AND rating <= 5),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
   );
 
@@ -70,7 +71,6 @@ async function createAdmin() {
   
     if (existingAdmin.rows.length < 1) {
       const hashedPassword = await bcrypt.hash(process.env.ADMIN_PASSWORD, 10)
-
       await pool.query(
         `
         INSERT INTO users (name, email, password, role)
@@ -78,7 +78,6 @@ async function createAdmin() {
       `,
         [process.env.ADMIN_NAME, process.env.ADMIN_EMAIL, hashedPassword, 'admin']
       )
-
       console.log('Admin created successfully');
     }
   } catch (err) {

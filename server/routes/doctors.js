@@ -2,14 +2,12 @@ require('dotenv').config();
 const express = require('express');
 const { pool } = require('../config/database');
 const { authenticateToken, authorizeRole } = require('../middleware');
-
 const router = express.Router();
 
 // get all doctors
 router.get('/', async (req, res) => {
   try {
     const { specialization } = req.query
-
     let query = `
       SELECT d.id, u.name, d.specialization, d.bio, d.experience, d.rating,
         d.consultation_fee, d.available_slots, u.phone
@@ -17,15 +15,12 @@ router.get('/', async (req, res) => {
       JOIN users u ON d.user_id = u.id
       WHERE u.is_blocked = FALSE
     `
-
     const params = []
     if (specialization) {
       query += ' AND d.specialization ILIKE $1';
       params.push(`%${specialization}%`)
     }
-
     query += ' ORDER BY d.rating DESC, d.id';
-
     const result = await pool.query(query, params)
     res.json(result.rows)
     
@@ -83,6 +78,5 @@ router.put("/availability", authenticateToken, authorizeRole('doctor'), async (r
     res.status(500).json({  error: "Server error"})
   }
 })
-
 
 module.exports = router;

@@ -25,7 +25,10 @@ router.put('/', async (req, res) => {
 router.get('/', async (req, res) => {
   try {
     const result = await pool.query(
-      'SELECT id, name, email, role, phone, created_at FROM users WHERE id = $1',
+      `SELECT u.id, u.name, u.email, u.role, u.phone, u.created_at, d.*
+       FROM users u
+       LEFT JOIN doctors d ON u.id = d.user_id
+       WHERE u.id = $1`,
       [req.user.id]
     );
     

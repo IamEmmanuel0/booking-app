@@ -2,24 +2,24 @@
 post http://127.0.0.1:3000/api/auth/signup
 Content-Type: application/json
 
-  {
-    "name": "Dr. Daniel Ojo",
-    "email": "daniel.ojo@cityhospital.com",
-    "password": "DanjO!88",
-    "role": "doctor",
-    "phone": "07012349876",
-    "specialization": "Ophthalmology",
-    "bio": "Ophthalmologist skilled in cataract surgery and comprehensive eye care.",
-    "experience": 14,
-    "consultationFee": 260.00
-  }
+{
+  "name": "Dr. Dev",
+  "email": "dev@empire-reports.com",
+  "password": "12345678",
+  "role": "doctor",
+  "phone": "09033447755",
+  "specialization": "Plastic Surgery",
+  "bio": "Plastic and reconstructive surgeon experienced in aesthetic and reconstructive procedures.",
+  "experience": 8,
+  "consultationFee": 350.00
+}
 
 ### log-in
 post http://127.0.0.1:3000/api/auth/login
 Content-Type: application/json
 
 {
-  "email": "emmanuel@dr.com", 
+  "email": "user.booking.com", 
   "password": "12345678"
 }
 
@@ -28,28 +28,72 @@ GET http://127.0.0.1:3000/api/doctors
 
 
 ### Get doctors Profile
-GET http://127.0.0.1:3000/api/doctors/3
+GET http://127.0.0.1:3000/api/doctors/6
 
-### Get doctors Profile
+### Update Doctor Availability
 PUT http://127.0.0.1:3000/api/doctors/availability
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwicm9sZSI6ImRvY3RvciIsImlhdCI6MTc2MjQyNTgxNiwiZXhwIjoxNzYzMDMwNjE2fQ.04AJqjr0zy4WtxWeEo0Ia_Qh4DlUAB3nfJwrpSl7zxA
 Content-Type: application/json
 
 {
-  "availableSlots": {
-    "Mon": true,
-    "Tue": true,
-    "Wed": true,
-    "Thu": false,
-    "Fri": true,
-    "Sat": false,
-    "Sun": false,
-    "startTime": "09:00 AM",
-    "endTime": "02:00 PM"
-  }
+  "availableSlots": [
+        {
+            "day": "Monday",
+            "endTime": "14:00",
+            "startTime": "09:00"
+        },
+        {
+            "day": "Tuesday",
+            "endTime": "14:00",
+            "startTime": "09:00"
+        },
+        {
+            "day": "Wednesday",
+            "endTime": "14:00",
+            "startTime": "09:00"
+        },
+        {
+            "day": "Thursday",
+            "endTime": "14:00",
+            "startTime": "09:00"
+        }
+    ]
 }
 
-
-### Profile
+### Get Profile
 GET http://127.0.0.1:3000/api/profile
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwicm9sZSI6ImRvY3RvciIsImlhdCI6MTc2MjQyNTgxNiwiZXhwIjoxNzYzMDMwNjE2fQ.04AJqjr0zy4WtxWeEo0Ia_Qh4DlUAB3nfJwrpSl7zxA
+
+### Update Profile
+PUT http://127.0.0.1:3000/api/profile
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6OCwicm9sZSI6ImRvY3RvciIsImlhdCI6MTc2MjQyNTgxNiwiZXhwIjoxNzYzMDMwNjE2fQ.04AJqjr0zy4WtxWeEo0Ia_Qh4DlUAB3nfJwrpSl7zxA
+Content-Type: application/json
+
+{
+  "name": "Dr. Dave",
+  "phone": "+68587687908"
+}
+
+### Admin -> get all users
+GET http://127.0.0.1:3000/api/admin/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzYyNTA0ODA3LCJleHAiOjE3NjMxMDk2MDd9.yLcUME7-H-78EutXGV6t4fyM3-ZTsN8FndDarfveG2c
+
+### Block a user 
+PUT http://127.0.0.1:3000/api/admin/users/11/block
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwicm9sZSI6ImFkbWluIiwiaWF0IjoxNzYyNTA0ODA3LCJleHAiOjE3NjMxMDk2MDd9.yLcUME7-H-78EutXGV6t4fyM3-ZTsN8FndDarfveG2c
+Content-Type: application/json
+
+{ "isBlocked": true }
+
+
+### Block a user 
+POST  http://127.0.0.1:3000/api/appointments
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MjMsIm5hbWUiOiJ1c2VyIiwicm9sZSI6InBhdGllbnQiLCJpYXQiOjE3NjI1MDk1ODcsImV4cCI6MTc2MzExNDM4N30.Oxj-LXfz26mdk0Rp03L2ljm72Z4gjDRHXavaG443i2s
+Content-Type: application/json
+
+{ 
+  "doctorId": 16,
+"appointmentDate": "2025-11-10",
+"appointmentTime": "10:30 AM",
+"notes": "Regular check-up"
+} 

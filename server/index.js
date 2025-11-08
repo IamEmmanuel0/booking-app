@@ -5,6 +5,7 @@ const authRouter = require('./routes/auth');
 const doctorRouter = require('./routes/doctors');
 const adminRouter = require('./routes/admin');
 const profileRouter = require('./routes/profile');
+const appointmentRouter = require('./routes/appointments');
 const { authenticateToken, authorizeRole } = require('./middleware');
 
 const app = express();
@@ -21,6 +22,7 @@ app.use('/api/auth', authRouter)
 app.use('/api/doctors', doctorRouter)
 app.use('/api/admin',  authenticateToken, authorizeRole('admin'), adminRouter)
 app.use('/api/profile', authenticateToken, profileRouter)
+app.use('/api/appointments', authenticateToken, appointmentRouter)
 
 // Start server
 app.listen(port, () => {
